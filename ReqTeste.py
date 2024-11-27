@@ -6,16 +6,13 @@ from config import conexao
 conectar = conexao.Conexao()
 
 
-<<<<<<< HEAD
-def encontar_pessoas(pessoas):
-=======
-def search_peaple(pessoas):
->>>>>>> 0d55d2b9960df81e6e961bdfa63d8d9dc1d7c3be
-    link = 'https://www.encyclopedia-titanica.org' + pessoas
-    print(link)
-    headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36'}
 
-    try:
+link = 'https://www.encyclopedia-titanica.org/titanic-victim/jego-grga-cacic.html'
+headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36'}
+
+#listaocupacao = ['Senior 6th. Engineer','2nd. Class Cook','2nd Baker','Junior Assistant 2nd. Engineer','Bed Room Steward (1st class)','Deck Engineer','Assistant baker','Assistant Vegetable Cook','Assistant Waiter','Smoke Room Steward (1st class)','Assistant Second Steward','Assistant Barber','Glory hole steward','Bath Steward','3rd Class Packer Steward','Third Class Steward','Smoke Room Steward (2nd Class)','Bathroom Steward (1st Class)','Assistant Saloon Steward, 2nd Class','Saloon Steward','Assistant Pantryman Steward','Squash racquet court attendant','First class saloon steward','Lounge Pantry Steward','Master-at-arms','Boatswain','Surgeon','Deck storekeeper','Able-bodied Seaman','Seaman','Assistant Surgeon','Mess Steward','Boatswain Mate','Lamp Trimmer','Lookout','Window Cleaner','Chief Officer','3rd. Officer','1st. Officer','6th. Officer','5th. Officer','2nd. Officer','4th. Officer','Master','Able Seaman','Saloon Steward','Realtor','Academic','Advertising Consultant','Architect','Artist','Aviator','Baggage Steward','Baker','Banker','Barber','Barman','Bath Attendant','Bell Boy','Bibliophile','Blacksmith','Boilermaker','Boots','Box Maker','Bricklayer','Builder','Bus Driver','Businessman','Butcher',"Butcher's Assistant",'Butler','Buyer','Cab Driver','Cabinet Maker','Carman','Carpenter / Joiner','Carver','Cashier','Caster','Chauffeur','Chef','Chemist','China Clay Worker','Cinematographer','Civil Servant','Clerk','Coach Trimmer','Confectioner','Cook','Cook (Personal)','Cooper','Crane Operator','Dairy Worker','Dealer','Decorator','Dipper','Doctor','Draughtsman','Dressmaker / Couturiere','Electrical Engineer','Electrician','Engineer','Estate Manager','Factory Foreman','Farm Labourer','Farmer','Farrier','Financier','Fireman','Fisherman','Fitter','Florist','Framer','Fur Cutter','Gambler','Gardener','General Labourer','Gentleman','Glass Man','Glove Cutter','Governess','Greaser','Grocer','Grocers Assistant','Groom','Horse Trainer','Hospital Attendant','Hospital Matron','Hotelier','Housekeeper','Housewife','Ice Man','Inspector','Interpreter','Ironmonger','Ironworker','Jeweller','Journalist','Judge','Justice of the Peace','Lamp Trimmer','Landowner','Laundry Worker','Lawyer','Leather Worker','Librarian','Lift Attendant','Linenkeeper','Locksmith','Machine Inspector','Magazineer','Manufacturer','Mason','Mechanical Engineer','Merchant','Messenger','Metallurgist','Military','Milliner','Miner','Missionary','Motor Fitter','Musical Instrument Vendor','Musician','Naval Architect','Nurse','Nursemaid','Of Independent Means','Oil Worker','Page Boy','Painter & Decorator','Pantryman','Personal Maid','Plateman','Plumber','Police Officer','Politician','Porter','Postal Clerk / Postman','Potter','Priest / Minister','Printer / Compositor','Property Developer / Real Estate','Provision Manager','Pugilist','Purser','Quarryman','Receptionist','Restaurant Manager','Retired','Saddler','Sales Manager','Salesman','Scholar','Scullion / Scullery Maid','Sculptor','Seaman','Seamstress','Secretary','Servant','Settler Recruiter',"Ship's Offier",'Shipbuilder','Shipowner','Shoemaker','Shop Assistant','Singer','Socialite','Sports Instructor','Sportsman','Stenographer','Steward','Stockbroker','Stockman','Stoker','Stone Cutter','Storekeeper','Tailor','Teacher','Telegraphist','Telephonist','Theatre Manager','Tile Maker','Tinsmith','Tool Maker','Tradesman','Traveller','Trimmer','Turner','Upholsterer','Valet','Waiter','Window Cleaner','Wood Carver','Writer']
+
+try:
         req = Request(link, headers = headers)
         response = urlopen(req)
         html = response.read()
@@ -44,6 +41,7 @@ def search_peaple(pessoas):
             nomecompleto= 'None'
 
         #IDADE
+              
         
         if str(soup.findAll('strong')).find('Age') > 0:
             idade = str(soup.findAll('a'))
@@ -53,7 +51,6 @@ def search_peaple(pessoas):
                 idade = idade[idade.find('/titanic-ages/'):idade.find('/titanic-ages/')+21].replace("/titanic-ages/","").replace(".html","").replace('"',"").strip()
         else:
             idade = ''
-
 
         #NOME DA FAMILIA
         nomefamilia = str(soup.findAll('span', {"itemprop":"familyName"}))
@@ -127,16 +124,14 @@ def search_peaple(pessoas):
             parceiro = 'Married'
         elif str(soup.findAll('a')).find('List of divorced Titanic passengers and crew') > 0:
             parceiro = 'Divorced' 
-        elif str(soup.findAll('a')).find('List of widowed Titanic passengers and crew ') > 0:
-            parceiro = 'Widowed'
         else:
-            parceiro = 'Single'
+            parceiro = 'None'
         
         #RESGATADA
         if str(soup.findAll('strong')).find('Died in the Titanic disaster') > 0:
-            resgate = 'Lost'
+            resgate = 'Die'
         elif str(soup.findAll('strong')).find('Rescued') > 0:
-            resgate = 'Saved'
+            resgate = 'Rescued'
         else:
             resgate = 'None'
 
@@ -185,6 +180,12 @@ def search_peaple(pessoas):
         else:
             bot = 'None'
 
+        if str(soup.findAll('a')).find('Titanic passengers and crew that worked as') > 0:
+            ocupacao = str(soup.find('span', {"itemprop":"jobTitle"}))
+            ocupacao = ocupacao.replace('<span itemprop="jobTitle">',"").replace("</span>","").replace('[',"").replace(']',"")
+        else:
+            ocupacao = 'None'
+
         #OCUPACAO
         if str(soup.findAll('a')).find('Titanic passengers and crew that worked as') > 0:
             ocupacao = str(soup.find('span', {"itemprop":"jobTitle"}))
@@ -199,17 +200,15 @@ def search_peaple(pessoas):
             corposnaoencontrando= 'Body Recovered'
 
 
-        conectar.criar('''CREATE TABLE IF NOT EXISTS titanic_people (Name  TEXT, Family TEXT, Age TEXT, Gender TEXT, Nationality TEXT, Embarked TEXT, Disembarked TEXT, Class TEXT, Marital_Status TEXT, Rescued TEXT, Boat TEXT, Occupation TEXT, Body TEXT, Link TEXT) ''')
+        #conectar.criar('''CREATE TABLE IF NOT EXISTS titanic_people (NomeCompleto  TEXT, NomeFamilia TEXT, Idade TEXT, Genero TEXT, Nacionalidade TEXT, Embarque TEXT, Desembarque TEXT, Classocial TEXT, Parceiro TEXT, Resgate TEXT, Boat TEXT, Ocupacao TEXT, Corpos TEXT) ''')
 
-        dataset = [nomecompleto, nomefamilia, idade, genero, nacionalidade, embarque, desembarque, classocial, parceiro, resgate, bot, ocupacao, corposnaoencontrando, link]
+        dataset = [nomecompleto, nomefamilia, idade, genero, nacionalidade, embarque, desembarque, classocial, parceiro, resgate, bot, ocupacao, corposnaoencontrando]
 
         print(dataset)
 
-        conectar.inserir('''INSERT INTO titanic_people (Name, Family, Age, Gender, Nationality, Embarked, Disembarked, Class, Marital_Status, Rescued, Boat, Occupation, Body, Link) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ''', dataset)
+        #conectar.inserir('''INSERT INTO titanic_people (NomeCompleto, NomeFamilia, Idade, Genero, Nacionalidade, Embarque, Desembarque, Classocial, Parceiro, Resgate, Boat, Ocupacao, Corpos) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ''', dataset)
 
-    except:
-<<<<<<< HEAD
+
+        
+except:
         print('fodeu')
-=======
-        print('erro')
->>>>>>> 0d55d2b9960df81e6e961bdfa63d8d9dc1d7c3be

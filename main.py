@@ -29,7 +29,7 @@ try:
 
   for nome_pessoa in lista:
     print(nome_pessoa)
-    bs4_encontrar_pessoas.search_peaple(nome_pessoa)
+    bs4_encontrar_pessoas.encontar_pessoas(nome_pessoa)
 
 
 except HTTPError as e:

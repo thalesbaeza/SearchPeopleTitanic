@@ -1,4 +1,10 @@
 import psycopg2
+<<<<<<< HEAD
+
+class Conexao():
+    def __init__(self, localhost="34.151.225.250", db="postgres", user="postgres", password="admin", port=5432):
+        self.conn = psycopg2.connect(host=localhost, database=db, user=user , password=password, port=port)
+=======
 import os
 
 class Conexao():
@@ -10,6 +16,7 @@ class Conexao():
                 DB_PASSWORD = os.getenv("DB_PASSWORD")
                  ):
         self.conn = psycopg2.connect(host=B_HOST, database=DB_NAME, user=DB_USER , password=DB_PASSWORD, port=DB_PORT)
+>>>>>>> 0d55d2b9960df81e6e961bdfa63d8d9dc1d7c3be
         self.cur = self.conn.cursor()
 
     def criar(self, query):
@@ -22,4 +29,10 @@ class Conexao():
 
     def sair(self):
         self.cur.close()
+<<<<<<< HEAD
         self.conn.close()
+
+   
+=======
+        self.conn.close()
+>>>>>>> 0d55d2b9960df81e6e961bdfa63d8d9dc1d7c3be
