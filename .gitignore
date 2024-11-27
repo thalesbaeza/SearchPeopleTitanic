@@ -1,0 +1,35 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VSCode files
+.vscode/
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Secrets
+.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db

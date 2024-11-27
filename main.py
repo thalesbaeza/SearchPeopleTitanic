@@ -2,9 +2,16 @@ from urllib.request import Request, urlopen
 from urllib.request import URLError, HTTPError
 from bs4 import BeautifulSoup
 from models import bs4_encontrar_pessoas
+<<<<<<< HEAD
 
 
 
+=======
+from dotenv import load_dotenv
+
+
+load_dotenv()
+>>>>>>> 0d55d2b9960df81e6e961bdfa63d8d9dc1d7c3be
 
 url = 'https://www.encyclopedia-titanica.org/titanic-maiden-voyage-passengers-and-crew/'
 
@@ -28,7 +35,11 @@ try:
 
   for nome_pessoa in lista:
     print(nome_pessoa)
+<<<<<<< HEAD
     bs4_encontrar_pessoas.encontar_pessoas(nome_pessoa)
+=======
+    bs4_encontrar_pessoas.search_peaple(nome_pessoa)
+>>>>>>> 0d55d2b9960df81e6e961bdfa63d8d9dc1d7c3be
 
 
 except HTTPError as e:

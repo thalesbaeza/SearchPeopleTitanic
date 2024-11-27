@@ -6,7 +6,11 @@ from config import conexao
 conectar = conexao.Conexao()
 
 
+<<<<<<< HEAD
 def encontar_pessoas(pessoas):
+=======
+def search_peaple(pessoas):
+>>>>>>> 0d55d2b9960df81e6e961bdfa63d8d9dc1d7c3be
     link = 'https://www.encyclopedia-titanica.org' + pessoas
     print(link)
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36'}
@@ -204,4 +208,8 @@ def encontar_pessoas(pessoas):
         conectar.inserir('''INSERT INTO titanic_people (Name, Family, Age, Gender, Nationality, Embarked, Disembarked, Class, Marital_Status, Rescued, Boat, Occupation, Body, Link) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ''', dataset)
 
     except:
+<<<<<<< HEAD
         print('fodeu')
+=======
+        print('erro')
+>>>>>>> 0d55d2b9960df81e6e961bdfa63d8d9dc1d7c3be
