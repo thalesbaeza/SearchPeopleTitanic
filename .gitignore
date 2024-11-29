@@ -10,10 +10,12 @@ __pycache__/
 .Python
 env/
 venv/
+*/venv/
 ENV/
 *.egg-info/
 dist/
 build/
+/venv/
 
 # Jupyter Notebook
 .ipynb_checkpoints
