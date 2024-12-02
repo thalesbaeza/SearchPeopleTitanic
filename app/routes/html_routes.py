@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends
 from bs4 import BeautifulSoup
-import json
 from sqlalchemy.orm import Session
 from app.models import database_models, schemas
 from app.config.database import get_db
 from urllib.request import Request, urlopen
-from urllib.request import URLError, HTTPError
+from urllib.request import URLError, HTTPError, HTTPException
 from app.models.schemas import PersonCreate
 from app.routes.crud_routes import create_person, read_person, update_person, delete_person
 
@@ -172,7 +171,7 @@ def extract_passenger_data(soup, link):
 
     person = PersonCreate(**Json)
 
-    result = create_person(person=person, db=db)
+    result = search_or_update_person(person=person, db=db)
     print(result)
 @router.post("/mine_passenger")
 def mine_html_page(name: str):
@@ -189,3 +188,15 @@ def mine_html_page(name: str):
         extract_passenger_data(soup, link)
     except:
         print("Error when entering passenger data into the database!")
+
+@router.post("/search_or_update", response_model=schemas.PersonCreate)
+def search_or_update_person(person: str, db: Session = Depends(get_db)):
+    db_person = db.query(database_models.TitanicPassenger).filter(
+        database_models.TitanicPassenger.name == person.name
+    ).first()
+    if not db_person:
+        new_person = create_person(person, db)
+        return new_person
+    else:
+        updated_person = update_person(person, db)
+        return updated_person
