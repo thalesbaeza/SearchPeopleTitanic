@@ -12,7 +12,7 @@ app = FastAPI(
 
 Base.metadata.create_all(bind=engine)
 
-app.include_router(people_router, prefix="/Passenger")
+app.include_router(people_router, prefix="/passenger")
 app.include_router(html_router, prefix="/html")
 
 @app.get("/")
