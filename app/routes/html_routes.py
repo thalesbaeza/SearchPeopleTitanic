@@ -1,13 +1,12 @@
 from fastapi import APIRouter, Depends
 from bs4 import BeautifulSoup
-import json
 from sqlalchemy.orm import Session
 from app.models import database_models, schemas
 from app.config.database import get_db
 from urllib.request import Request, urlopen
 from urllib.request import URLError, HTTPError
 from app.models.schemas import PersonCreate
-from app.routes.crud_routes import create_person, read_person, update_person, delete_person
+from app.routes.crud_routes import create_person, update_person
 
 router = APIRouter(tags=["HTML Scraper"])
 
@@ -130,10 +129,28 @@ def extract_passenger_data(soup, link):
         "Rescued": "Saved",
     }
     rescue_status = classify_by_keywords("strong", rescue_mapping)
+    print(rescue_status)
 
-    # boat
-    boat_mapping = {f"lifeboat {chr(i)}": f"lifeboat {chr(i)}" for i in range(65, 91)}
-    boat_mapping.update({f"lifeboat {i}": f"lifeboat {i}" for i in range(1, 17)})
+    boat_mapping = {"Titanic survivors in lifeboat A" : "lifeboat A",
+                    "Titanic survivors in lifeboat B" : "lifeboat B",
+                    "Titanic survivors in lifeboat C" : "lifeboat C",
+                    "Titanic survivors in lifeboat D" : "lifeboat D",
+                    "Titanic survivors in lifeboat 1 " : "lifeboat 1 ",
+                    "Titanic survivors in lifeboat 2" : "lifeboat 2",
+                    "Titanic survivors in lifeboat 3" : "lifeboat 3",
+                    "Titanic survivors in lifeboat 4" : "lifeboat 4",
+                    "Titanic survivors in lifeboat 5" : "lifeboat 5",
+                    "Titanic survivors in lifeboat 6" : "lifeboat 6",
+                    "Titanic survivors in lifeboat 7" : "lifeboat 7",
+                    "Titanic survivors in lifeboat 8" : "lifeboat 8",
+                    "Titanic survivors in lifeboat 9" : "lifeboat 9",
+                    "Titanic survivors in lifeboat 10" : "lifeboat 10",
+                    "Titanic survivors in lifeboat 11" : "lifeboat 11",
+                    "Titanic survivors in lifeboat 12" : "lifeboat 12",
+                    "Titanic survivors in lifeboat 13" : "lifeboat 13",
+                    "Titanic survivors in lifeboat 14" : "lifeboat 14",
+                    "Titanic survivors in lifeboat 15" : "lifeboat 15",
+                    "Titanic survivors in lifeboat 16" : "lifeboat 16"}
     boat = classify_by_keywords("a", boat_mapping)
 
     # occupation
@@ -168,6 +185,7 @@ def extract_passenger_data(soup, link):
         "link": link
         }
     
+    print(Json)
     db: Session = next(get_db())
 
     person = PersonCreate(**Json)
@@ -189,3 +207,16 @@ def mine_html_page(name: str):
         extract_passenger_data(soup, link)
     except:
         print("Error when entering passenger data into the database!")
+
+@router.post("/search_or_update", response_model=schemas.PersonCreate)
+def search_or_update_person(person: str, db: Session = Depends(get_db)):
+    db_person = db.query(database_models.TitanicPassenger).filter(
+        database_models.TitanicPassenger.name == person.name
+    ).first()
+    if not db_person:
+        print(db_person)
+        new_person = create_person(person, db)
+        return new_person
+    else:
+        updated_person = update_person(person, db)
+        return updated_person
